@@ -12,6 +12,25 @@ public:
 			arr[i] = new T[columns];
 		}
 	}
+	table(const table& other)
+	{
+		this->rows = other.rows;
+		this->columns = other.columns;
+
+		this->arr = new T * [rows];
+		for (int i = 0; i < rows; ++i)
+		{
+			this->arr[i] = new T[columns];
+		}
+
+		for (int i = 0; i < rows; ++i)
+		{
+			for (int j = 0; j < columns; ++j)
+			{
+				this->arr[i][j] = other[i][j];
+			}
+		}
+	}
 
 	~table()
 	{
@@ -32,6 +51,35 @@ public:
 		return arr[i];
 	}
 
+	table& operator= (const table& other)
+	{
+		for (int i = 0; i < this->rows; ++i)
+		{
+			delete[] this->arr[i];
+		}
+		delete[] this->arr;
+		
+		this->rows = other.rows;
+		this->columns = other.columns;
+
+		this->arr = new T* [rows];
+		for (int i = 0; i < rows; ++i)
+		{
+			this->arr[i] = new T[columns];
+		}
+
+		for (int i = 0; i < rows; ++i)
+		{
+			for (int j = 0; j < columns; ++j)
+			{
+				this->arr[i][j] = other[i][j];
+			}
+		}
+		return *this;
+	}
+
+
+
 	int Size() const
 	{
 		return rows * columns;
@@ -49,6 +97,8 @@ int main()
 {
 	auto test = table<int>(2, 3);
 	test[0][0] = 4;
-	std::cout << test[0][0]<<std::endl; // выводит 4
+
+	std::cout << test[0][0]<<std::endl;
 	std::cout << test.Size();
+	return 0;
 }
